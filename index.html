@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101411">
+  <meta name="description" content="Weaver Books Book Profit Calculator">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <title>Book Profit Calculator</title>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="book-icon" aria-hidden="true">▥</div>
+        <div>
+          <h1>Book Profit Calculator</h1>
+          <p>Weaver Books</p>
+        </div>
+      </div>
+      <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙</button>
+    </header>
+
+    <nav class="mode-tabs" aria-label="Calculator mode">
+      <button class="mode-tab active" data-mode="profit">
+        <strong>PROFIT MODE</strong>
+        <span>What will I make?</span>
+      </button>
+      <button class="mode-tab" data-mode="target">
+        <strong>TARGET MODE</strong>
+        <span>How much can I pay?</span>
+      </button>
+    </nav>
+
+    <section class="section">
+      <div class="section-title">INPUTS</div>
+
+      <div id="profitModeInputs">
+        <label class="field">
+          <span>
+            <strong>Acquisition Cost</strong>
+            <small>Total cost to acquire the book</small>
+          </span>
+          <span class="input-wrap currency">
+            <b>$</b><input id="acquisitionCost" type="number" inputmode="decimal" min="0" step="0.01" value="7.50">
+          </span>
+        </label>
+
+        <label class="field">
+          <span>
+            <strong>Expected Sale Price</strong>
+            <small>What you think it will sell for</small>
+          </span>
+          <span class="input-wrap currency">
+            <b>$</b><input id="salePrice" type="number" inputmode="decimal" min="0" step="0.01" value="39.99">
+          </span>
+        </label>
+
+        <label class="field">
+          <span>
+            <strong>eBay Fee</strong>
+            <small>Default selling fee</small>
+          </span>
+          <span class="input-wrap percent">
+            <input id="feePercent" type="number" inputmode="decimal" min="0" step="0.1" value="17.5"><b>%</b>
+          </span>
+        </label>
+
+        <label class="field">
+          <span>
+            <strong>Shipping Cost</strong>
+            <small>Estimated shipping/label cost</small>
+          </span>
+          <span class="input-wrap currency">
+            <b>$</b><input id="shippingCost" type="number" inputmode="decimal" min="0" step="0.01" value="5.22">
+          </span>
+        </label>
+
+        <label class="field">
+          <span>
+            <strong>Profit Goal</strong>
+            <small>Your minimum desired profit</small>
+          </span>
+          <span class="input-wrap currency">
+            <b>$</b><input id="profitGoal" type="number" inputmode="decimal" min="0" step="0.01" value="20.00">
+          </span>
+        </label>
+      </div>
+
+      <div id="targetModeInputs" class="hidden">
+        <label class="field">
+          <span>
+            <strong>Expected Sale Price</strong>
+            <small>What comparable books are selling for</small>
+          </span>
+          <span class="input-wrap currency">
+            <b>$</b><input id="targetSalePrice" type="number" inputmode="decimal" min="0" step="0.01" value="39.99">
+          </span>
+        </label>
+
+        <label class="field">
+          <span>
+            <strong>Profit Goal</strong>
+            <small>Your minimum desired profit</small>
+          </span>
+          <span class="input-wrap currency">
+            <b>$</b><input id="targetProfitGoal" type="number" inputmode="decimal" min="0" step="0.01" value="20.00">
+          </span>
+        </label>
+
+        <label class="field">
+          <span>
+            <strong>Actual Purchase Price</strong>
+            <small>What the book costs you right now</small>
+          </span>
+          <span class="input-wrap currency">
+            <b>$</b><input id="targetPurchasePrice" type="number" inputmode="decimal" min="0" step="0.01" value="6.99">
+          </span>
+        </label>
+      </div>
+
+      <button class="calculate-btn" id="calculateBtn">▣ &nbsp; CALCULATE</button>
+    </section>
+
+    <section class="results">
+      <div class="section-title">RESULTS</div>
+
+      <div class="result-card" id="profitResult">
+        <div class="result-head">
+          <div>
+            <span class="result-label" id="resultLabel">ESTIMATED PROFIT</span>
+            <div class="profit-number" id="profitAmount">$20.27</div>
+          </div>
+          <div class="status-badge" id="statusBadge">✓ <span>MEETS<br>GOAL</span></div>
+        </div>
+        <div class="buy-pass-banner hidden" id="buyPassBanner">
+          <div class="buy-pass-label" id="buyPassLabel">BUY</div>
+          <div class="buy-pass-sub" id="buyPassSub">This book meets your $20.00 profit goal.</div>
+        </div>
+
+        <div class="breakdown">
+          <div><span>Sale Price</span><b id="breakSale">$39.99</b></div>
+          <div><span>eBay Fees (<span id="breakFeePct">17.5</span>%)</span><b class="negative" id="breakFee">-$7.00</b></div>
+          <div><span>Shipping Cost</span><b class="negative" id="breakShipping">-$5.22</b></div>
+          <div><span>Acquisition Cost</span><b class="negative" id="breakAcquisition">-$7.50</b></div>
+          <hr>
+          <div><span>Estimated Profit</span><b class="positive" id="breakProfit">$20.27</b></div>
+          <div><span>ROI</span><b class="positive" id="roi">270.3%</b></div>
+        </div>
+      </div>
+
+      <div class="target-card" id="targetResult">
+        <div class="target-title">🎯 &nbsp; YOUR PROFIT TARGET</div>
+        <div class="target-row"><span>Maximum Purchase Price</span><strong id="maxAcquisition">$7.77</strong></div>
+        <div class="target-row" id="targetMinSaleRow"><span>Minimum Sale Price Needed</span><strong id="minSalePrice">$39.66</strong></div>
+      </div>
+
+      <p class="note">All values are estimates. eBay fees and shipping can vary by sale.</p>
+    </section>
+
+    <section class="settings-panel hidden" id="settingsPanel">
+      <div class="panel-header">
+        <h2>Settings</h2>
+        <button class="close-btn" id="closeSettings">Done</button>
+      </div>
+      <p>These defaults are saved on this phone.</p>
+      <label class="setting-row">Default eBay Fee %
+        <input id="defaultFee" type="number" min="0" step="0.1">
+      </label>
+      <label class="setting-row">Default Shipping Cost
+        <span class="input-wrap currency"><b>$</b><input id="defaultShipping" type="number" min="0" step="0.01"></span>
+      </label>
+      <label class="setting-row">Default Profit Goal
+        <span class="input-wrap currency"><b>$</b><input id="defaultGoal" type="number" min="0" step="0.01"></span>
+      </label>
+      <button class="calculate-btn" id="saveSettings">SAVE DEFAULTS</button>
+    </section>
+
+    <footer>
+      <span class="active">▣<small>Calculator</small></span>
+      <span>⚙<small>Settings</small></span>
+    </footer>
+  </main>
+<script src="app.js"></script>
+</body>
+</html>

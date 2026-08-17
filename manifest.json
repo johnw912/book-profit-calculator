@@ -1,0 +1,12 @@
+{
+  "name": "Weaver Books - Book Profit Calculator",
+  "short_name": "Book Profit",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b0e0c",
+  "theme_color": "#101411",
+  "description": "Quick profit and target calculator for book reselling.",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
