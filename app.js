@@ -182,13 +182,30 @@ function saveDefaults(){
 }
 
 // Select the entire value when a numeric field is tapped/focused.
-// This makes replacing a value quick on a phone instead of requiring
-// the user to manually delete the existing number.
-document.querySelectorAll('input[type="number"]').forEach(input => {
-  input.addEventListener("focus", function () {
+// The fields use type="text" + inputmode="decimal" so mobile browsers
+// reliably support selection ranges while still showing the numeric keyboard.
+document.querySelectorAll('input[inputmode="decimal"]').forEach(input => {
+  const selectAll = function () {
+    requestAnimationFrame(() => {
+      try {
+        this.focus({ preventScroll: true });
+        this.setSelectionRange(0, this.value.length);
+      } catch (e) {
+        // Some browsers can briefly reject a selection while focus changes.
+      }
+    });
+  };
+
+  input.addEventListener("focus", selectAll);
+
+  // On touch devices, run again after the browser finishes its native
+  // tap/caret handling so the whole value remains selected.
+  input.addEventListener("touchend", function () {
     setTimeout(() => {
-      this.select();
-    }, 0);
+      try {
+        this.setSelectionRange(0, this.value.length);
+      } catch (e) {}
+    }, 50);
   });
 });
 
