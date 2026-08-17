@@ -181,6 +181,17 @@ function saveDefaults(){
   calculate();
 }
 
+// Select the entire value when a numeric field is tapped/focused.
+// This makes replacing a value quick on a phone instead of requiring
+// the user to manually delete the existing number.
+document.querySelectorAll('input[type="number"]').forEach(input => {
+  input.addEventListener("focus", function () {
+    setTimeout(() => {
+      this.select();
+    }, 0);
+  });
+});
+
 document.querySelectorAll(".mode-tab").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".mode-tab").forEach(x => x.classList.remove("active"));
